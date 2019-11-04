@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Camera</title>
+  </head>
+  <body>
+    <div>
+      <video autoplay></video>
+    </div>
+    <script>
+      // video constraints
+      let constraints = {
+        video: {
+          width: { exact: 300 },
+          height: { exact: 300 },
+          facingMode: {
+            exact: 'environment'
+          }
+        }
+      };
+
+      /**
+       * 查找user media
+       *
+       * @returns {boolean}
+       */
+      function hasGetUserMedia() {
+        return !!(
+          navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+        );
+      }
+
+      /**
+       * 渲染相机
+       *
+       * @returns {Promise<void>}
+       */
+      async function initCamera() {
+        if (hasGetUserMedia) {
+          try {
+            let stream = await navigator.mediaDevices.getUserMedia(constraints);
+            let video = document.querySelector("video");
+            video.srcObject = stream;
+          } catch (e) {
+            alert(e);
+          }
+        } else {
+          alert("no user media");
+        }
+      }
+
+      initCamera();
+    </script>
+  </body>
+</html>
